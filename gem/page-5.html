@@ -1,0 +1,177 @@
+<div
+  style="width: 297mm; height: 210mm; overflow: hidden; background: #ffffff; padding: 40px; display: flex; justify-content: center; align-items: center;">
+  <style>
+    .p5-body {
+      font-family: 'Inter', sans-serif;
+      color: #201e1b;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      gap: 40px;
+    }
+
+    .p5-left-column {
+      flex: 0 0 300px;
+      background-color: #f9fafb;
+      border-radius: 16px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .p5-right-column {
+      flex: 1;
+    }
+
+    .p5-option-title {
+      font-size: 16px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .p5-plan-title {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 40px;
+    }
+
+    .p5-all-options {
+      font-size: 16px;
+      color: #6b7280;
+      margin-top: auto;
+      margin-bottom: 16px;
+    }
+
+    .p5-option-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      padding: 12px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .p5-total-price-section {
+      background-color: #f9fafb;
+      padding: 30px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+
+    .p5-total-price {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .p5-price-subtitle {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .p5-payment-breakdown {
+      font-size: 16px;
+    }
+
+    .p5-payment-category {
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .p5-payment-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .p5-payment-row:last-child {
+      border-bottom: none;
+    }
+
+    .p5-payment-details {
+      display: flex;
+      gap: 10px;
+    }
+  </style>
+  <div class="p5-body">
+    <div class="p5-left-column">
+      <div class="p5-option-title">Payment Plan Option</div>
+      <div class="p5-plan-title">3 Years Post Handover Payment Plan</div>
+      <div class="p5-all-options">All options</div>
+      <div class="p5-option-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z"
+            stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>3 Years Post Handover</span>
+      </div>
+      <div class="p5-option-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z"
+            stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>30/70 Payment Plan</span>
+      </div>
+    </div>
+    <div class="p5-right-column">
+      <div class="p5-total-price-section">
+        <div class="p5-total-price">Total price: {{total_price}}</div>
+        <div class="p5-price-subtitle">The minimum price per unit in the project is taken as an example.</div>
+      </div>
+      <div class="p5-payment-breakdown">
+        <div class="p5-payment-category">Down Payment <span style="font-size: 14px; color: #6b7280;">1
+            payment</span></div>
+        <div class="p5-payment-row">
+          <span>On Booking</span>
+          <div class="p5-payment-details">
+            <span>10%</span>
+            <span>{{on_booking_value}}</span>
+          </div>
+        </div>
+        <div class="p5-payment-row">
+          <span>Administrative fee</span>
+          <span>{{admin_fee_value}}</span>
+        </div>
+        <div class="p5-payment-row">
+          <span>DLD Fee</span>
+          <div class="p5-payment-details">
+            <span>{{dld_fee_percent}}</span>
+            <span>{{dld_fee_value}}</span>
+          </div>
+        </div>
+        <div class="p5-payment-category">During construction <span style="font-size: 14px; color: #6b7280;">1
+            payment</span></div>
+        <div class="p5-payment-row">
+          <span></span>
+          <div class="p5-payment-details">
+            <span>{{during_construction_percent}}</span>
+            <span>{{during_construction_value}}</span>
+          </div>
+        </div>
+        <div class="p5-payment-category">On Handover <span style="font-size: 14px; color: #6b7280;">1 payment</span>
+        </div>
+        <div class="p5-payment-row">
+          <span></span>
+          <div class="p5-payment-details">
+            <span>{{on_handover_percent}}</span>
+            <span>{{on_handover_value}}</span>
+          </div>
+        </div>
+        <div class="p5-payment-category">Post Handover <span style="font-size: 14px; color: #6b7280;">1
+            payment</span></div>
+        <div class="p5-payment-row">
+          <span></span>
+          <div class="p5-payment-details">
+            <span>{{post_handover_percent}}</span>
+            <span>{{post_handover_value}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

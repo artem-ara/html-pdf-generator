@@ -1,0 +1,165 @@
+<div style="width: 297mm; height: 210mm; overflow: hidden; background: #ffffff; padding: 40px;">
+  <style>
+    .p4-body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #201e1b;
+      line-height: 1.2;
+      width: 100%;
+      height: 100%;
+    }
+
+    .p4-units-container {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      align-items: stretch;
+      justify-content: flex-start;
+      width: 100%;
+      height: 100%;
+    }
+
+    .p4-left-panel {
+      flex: 0 0 400px;
+      background: #f8f8f8;
+      border: 1px solid #f0f0f4;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+    }
+
+    .p4-units-title {
+      font-weight: 600;
+      font-size: 56px;
+      color: #201e1b;
+    }
+
+    .p4-units-info {}
+
+    .p4-units-label {
+      font-size: 20px;
+      color: #8a8a8d;
+      margin-bottom: 16px;
+    }
+
+    .p4-units-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .p4-unit-item {
+      font-weight: 600;
+      font-size: 24px;
+      color: #201e1b;
+    }
+
+    .p4-right-content {
+      flex: 1;
+      display: flex;
+      gap: 40px;
+    }
+
+    .p4-villa-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border: 2px solid #f0f0f4;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .p4-villa-image {
+      width: 100%;
+      flex-grow: 1;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .p4-villa-details {
+      padding: 20px;
+    }
+
+    .p4-villa-title {
+      font-weight: 600;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .p4-price-section,
+    .p4-rate-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 18px;
+    }
+
+    .p4-price-row,
+    .p4-area-row,
+    .p4-rate-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .p4-price-label,
+    .p4-area-label,
+    .p4-rate-label {
+      color: #8a8a8d;
+    }
+  </style>
+  <div class="p4-body">
+    <div class="p4-units-container">
+      <div class="p4-left-panel">
+        <div>
+          <h1 class="p4-units-title">Typical Units</h1>
+        </div>
+        <div class="p4-units-info">
+          <div class="p4-units-label">Number of units</div>
+          <div class="p4-units-list">
+            <div class="p4-unit-item">STUDIO - {{unit_studio_count}}</div>
+            <div class="p4-unit-item">1 BEDROOM - {{unit_1_bed_count}}</div>
+            <div class="p4-unit-item">2 BEDROOM - {{unit_2_bed_count}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="p4-right-content">
+        <div class="p4-villa-card">
+          <div class="p4-villa-image" style="background-image: url('{{villa_4_bed_image}}')"></div>
+          <div class="p4-villa-details">
+            <h2 class="p4-villa-title">Villa: 4 Bedroom</h2>
+            <div class="p4-price-section">
+              <div class="p4-price-row"><span>from <b>{{villa_4_bed_price_from}}</b></span><span>to
+                  <b>{{villa_4_bed_price_to}}</b></span></div>
+              <div class="p4-area-row"><span>from <b>{{villa_4_bed_area_from}}</b></span><span>to
+                  <b>{{villa_4_bed_area_to}}</b></span></div>
+            </div>
+            <hr style="margin: 20px 0; border-color: #f0f0f4;">
+            <div class="p4-rate-section">
+              <div class="p4-rate-row"><span>from <b>{{villa_4_bed_rate_from}}</b></span><span>to
+                  <b>{{villa_4_bed_rate_to}}</b></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="p4-villa-card">
+          <div class="p4-villa-image" style="background-image: url('{{villa_5_bed_image}}')"></div>
+          <div class="p4-villa-details">
+            <h2 class="p4-villa-title">Villa: 5 Bedroom</h2>
+            <div class="p4-price-section">
+              <div class="p4-price-row"><span>from <b>{{villa_5_bed_price_from}}</b></span><span>to
+                  <b>{{villa_5_bed_price_to}}</b></span></div>
+              <div class="p4-area-row"><span>from <b>{{villa_5_bed_area_from}}</b></span><span>to
+                  <b>{{villa_5_bed_area_to}}</b></span></div>
+            </div>
+            <hr style="margin: 20px 0; border-color: #f0f0f4;">
+            <div class="p4-rate-section">
+              <div class="p4-rate-row"><span>from <b>{{villa_5_bed_rate_from}}</b></span><span>to
+                  <b>{{villa_5_bed_rate_to}}</b></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

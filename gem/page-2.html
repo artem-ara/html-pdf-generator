@@ -1,0 +1,469 @@
+<div style="width: 297mm; height: 210mm; overflow: hidden; background: #ffffff;">
+  <style>
+    .p2-body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #201e1b;
+      line-height: 1.2;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+    }
+
+    .p2-project-container {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      align-items: stretch;
+      justify-content: flex-start;
+      padding: 40px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .p2-left-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .p2-about-header {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .p2-about-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: #8a8a8d;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .p2-project-info {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .p2-project-title-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .p2-project-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 48px;
+      color: #201e1b;
+    }
+
+    .p2-info-row {
+      display: flex;
+      flex-direction: row;
+      gap: 24px;
+      align-items: flex-start;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .p2-info-item {
+      display: flex;
+      flex-direction: row;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .p2-developer-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #f0f0f4;
+    }
+
+    .p2-developer-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .p2-district-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #f0f0f4;
+    }
+
+    .p2-district-logo svg {
+      transform: scale(0.75);
+    }
+
+    .p2-info-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      justify-content: center;
+    }
+
+    .p2-info-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: #8a8a8d;
+    }
+
+    .p2-info-value {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 22px;
+      color: #201e1b;
+    }
+
+    .p2-timeline-section {
+      width: 100%;
+      border: 1px solid #f0f0f4;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .p2-timeline-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 30px;
+      width: 100%;
+    }
+
+    .p2-timeline-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .p2-timeline-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .p2-timeline-icon svg {
+      transform: scale(0.8);
+    }
+
+    .p2-timeline-icon.start {
+      border: 1px solid #201e1b;
+    }
+
+    .p2-timeline-icon.end {
+      border: 1px solid #f0f0f4;
+    }
+
+    .p2-timeline-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .p2-timeline-date {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: #201e1b;
+    }
+
+    .p2-timeline-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: #8a8a8d;
+    }
+
+    .p2-timeline-progress {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+    }
+
+    .p2-progress-line {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: auto;
+      width: 100%;
+    }
+
+    .p2-progress-line-full {
+      flex: 1;
+      height: 2px;
+      background: #201e1b;
+    }
+
+    .p2-progress-dot {
+      width: 10px;
+      height: 10px;
+      background: #201e1b;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .p2-progress-line-partial {
+      flex: 1;
+      height: 2px;
+      background: #8a8a8d;
+    }
+
+    .p2-progress-text {
+      max-width: 250px;
+      text-align: center;
+    }
+
+    .p2-progress-text p {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      color: #201e1b;
+    }
+
+    .p2-pricing-table {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      border-radius: 20px;
+      overflow: hidden;
+      flex-grow: 1;
+    }
+
+    .p2-table-header {
+      display: flex;
+      flex-direction: row;
+      gap: 4px;
+      background: #f8f8f8;
+      border: 1px solid #f0f0f4;
+      border-bottom: 0;
+      border-radius: 20px 20px 0 0;
+      padding: 14px 20px;
+    }
+
+    .p2-header-cell {
+      flex: 1;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: #8a8a8d;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .p2-table-body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #ffffff;
+      border: 1px solid #f0f0f4;
+      border-top: 0;
+      border-radius: 0 0 20px 20px;
+      padding: 20px;
+    }
+
+    .p2-table-row {
+      display: flex;
+      flex-direction: row;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .p2-table-row.gray .p2-table-cell {
+      color: #8a8a8d;
+    }
+
+    .p2-table-cell {
+      flex: 1;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: #201e1b;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .p2-right-content {
+      flex: 0 0 auto;
+      width: 45%;
+      max-height: 100%;
+    }
+
+    .p2-project-image {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .p2-project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+  <div class="p2-body">
+    <div class="p2-project-container">
+      <div class="p2-left-content">
+        <div class="p2-about-header">
+          <p class="p2-about-text">About the project</p>
+        </div>
+        <div class="p2-project-info">
+          <div class="p2-project-title-section">
+            <h1 class="p2-project-title">{{project_title_p2}}</h1>
+            <div class="p2-info-row">
+              <div class="p2-info-item">
+                <div class="p2-developer-logo"><img src="{{developer_logo}}" alt="Damac Properties" /></div>
+                <div class="p2-info-text">
+                  <div class="p2-info-label">Developer</div>
+                  <div class="p2-info-value">{{developer_name}}</div>
+                </div>
+              </div>
+              <div class="p2-info-item">
+                <div class="p2-district-logo"><svg width="72" height="72" viewBox="0 0 73 73" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="1" width="70.0261" height="70.0261" rx="15" fill="white" stroke="#F0F0F4"
+                      stroke-width="2" />
+                    <path
+                      d="M24.6549 48.2982C22.3835 46.868 18 46.5789 18 46.5789C18 46.5789 20.8872 41.8056 20.7113 38.4737C20.5591 35.5921 18 31.5965 18 31.5965V25.7018H31.3099H41.662L46 20L55 24.5L52.5 29.5L55 35L49.0563 37.2456C49.0563 37.2456 51.0546 41.125 50.5352 43.6316C50.0974 45.7444 49.4996 47.3179 47.5775 48.2982C45.8625 49.1729 44.5049 48.8057 42.6479 48.2982C40.9448 47.8329 40.4561 46.3072 38.7042 46.0877C35.499 45.6862 35.2024 50.2984 32.0493 51C30.358 51.3763 29.2152 51.6585 27.6127 51C26.1657 50.4054 25.9788 49.1318 24.6549 48.2982Z"
+                      fill="white" stroke="#201E1B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg></div>
+                <div class="p2-info-text">
+                  <div class="p2-info-label">District</div>
+                  <div class="p2-info-value">{{district_name}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p2-timeline-section">
+            <div class="p2-timeline-container">
+              <div class="p2-timeline-item">
+                <div class="p2-timeline-icon start"><svg width="29" height="29" viewBox="0 0 25 27" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M7.20262 0.900323C7.20262 1.39756 7.60571 1.80065 8.10294 1.80065L15.3056 1.80065C15.8028 1.80065 16.2059 1.39756 16.2059 0.900321C16.2059 0.403085 15.8028 -5.2588e-06 15.3056 -5.17186e-06L8.10294 -3.91251e-06C7.6057 -3.82557e-06 7.20262 0.403086 7.20262 0.900323Z"
+                      fill="#201E1B" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M19.4707 7.83924C19.1191 7.48764 19.1191 6.91758 19.4707 6.56598L21.2713 4.76533C21.6229 4.41373 22.193 4.41373 22.5446 4.76533C22.8962 5.11693 22.8962 5.68698 22.5446 6.03858L20.7439 7.83924C20.3923 8.19084 19.8223 8.19084 19.4707 7.83924Z"
+                      fill="#201E1B" />
+                    <path
+                      d="M11.7041 3.00109C18.1651 3.00109 23.4081 8.24425 23.4082 14.7052C23.4082 21.1662 18.1651 26.4093 11.7041 26.4093C5.24317 26.4092 8.60373e-07 21.1661 8.60373e-07 14.7052C8.04309e-05 8.2443 5.24322 3.00117 11.7041 3.00109ZM11.7041 7.80284C11.2069 7.80292 10.8037 8.20605 10.8037 8.70323V14.7052C10.8037 15.2024 11.2069 15.6055 11.7041 15.6056C12.2013 15.6056 12.6045 15.2024 12.6045 14.7052V8.70323C12.6045 8.206 12.2013 7.80284 11.7041 7.80284Z"
+                      fill="#201E1B" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M24.3452 6.6388C23.9936 6.9904 23.4236 6.9904 23.072 6.6388L20.6711 4.23793C20.3195 3.88633 20.3195 3.31628 20.6711 2.96468C21.0227 2.61308 21.5928 2.61308 21.9444 2.96468L24.3452 5.36555C24.6968 5.71715 24.6968 6.2872 24.3452 6.6388Z"
+                      fill="#201E1B" />
+                  </svg></div>
+                <div class="p2-timeline-info">
+                  <div class="p2-timeline-date">{{timeline_start_date}}</div>
+                  <div class="p2-timeline-label">Building start</div>
+                </div>
+              </div>
+              <div class="p2-timeline-progress">
+                <div class="p2-progress-line">
+                  <div class="p2-progress-line-full"></div>
+                  <div class="p2-progress-dot"></div>
+                  <div class="p2-progress-line-partial"></div>
+                </div>
+                <div class="p2-progress-text">
+                  <p>{{timeline_progress_text}}</p>
+                </div>
+              </div>
+              <div class="p2-timeline-item">
+                <div class="p2-timeline-icon end"><svg width="29" height="29" viewBox="0 0 25 27" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M7.20262 0.900323C7.20262 1.39756 7.60571 1.80065 8.10295 1.80065L15.3056 1.80065C15.8028 1.80065 16.2059 1.39756 16.2059 0.900321C16.2059 0.403085 15.8028 -5.2588e-06 15.3056 -5.17186e-06L8.10295 -3.91251e-06C7.60571 -3.82557e-06 7.20262 0.403086 7.20262 0.900323Z"
+                      fill="#201E1B" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M19.4707 7.83924C19.1191 7.48764 19.1191 6.91758 19.4707 6.56598L21.2713 4.76533C21.6229 4.41373 22.193 4.41373 22.5446 4.76533C22.8962 5.11693 22.8962 5.68698 22.5446 6.03858L20.7439 7.83924C20.3923 8.19084 19.8223 8.19084 19.4707 7.83924Z"
+                      fill="#201E1B" />
+                    <path
+                      d="M11.7041 3.00109C18.1651 3.00109 23.4081 8.24425 23.4082 14.7052C23.4082 21.1662 18.1651 26.4093 11.7041 26.4093C5.24317 26.4092 3.91878e-06 21.1661 3.91878e-06 14.7052C8.34893e-05 8.2443 5.24322 3.00117 11.7041 3.00109ZM11.7041 7.80284C11.2069 7.80293 10.8037 8.20605 10.8037 8.70323V14.7052C10.8037 15.2024 11.2069 15.6055 11.7041 15.6056C12.2013 15.6056 12.6045 15.2024 12.6045 14.7052V8.70323C12.6045 8.206 12.2013 7.80284 11.7041 7.80284Z"
+                      fill="#201E1B" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M24.3452 6.6388C23.9936 6.9904 23.4236 6.9904 23.072 6.6388L20.6711 4.23793C20.3195 3.88633 20.3195 3.31628 20.6711 2.96468C21.0227 2.61308 21.5928 2.61308 21.9444 2.96468L24.3452 5.36555C24.6968 5.71715 24.6968 6.2872 24.3452 6.6388Z"
+                      fill="#201E1B" />
+                  </svg></div>
+                <div class="p2-timeline-info">
+                  <div class="p2-timeline-date">{{timeline_end_date}}</div>
+                  <div class="p2-timeline-label">Handover</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p2-pricing-table">
+          <div class="p2-table-header">
+            <div class="p2-header-cell">Unit type</div>
+            <div class="p2-header-cell">Bedrooms</div>
+            <div class="p2-header-cell">Amount</div>
+            <div class="p2-header-cell">Area, sqft</div>
+            <div class="p2-header-cell">Price from</div>
+          </div>
+          <div class="p2-table-body">
+            <div class="p2-table-row gray">
+              <div class="p2-table-cell">Apartments</div>
+              <div class="p2-table-cell">Studio</div>
+              <div class="p2-table-cell">0/108</div>
+              <div class="p2-table-cell">952 - 1084</div>
+              <div class="p2-table-cell">1 218 000 AED</div>
+            </div>
+            <div class="p2-table-row">
+              <div class="p2-table-cell">Apartments</div>
+              <div class="p2-table-cell">1 Bedroom</div>
+              <div class="p2-table-cell">16/86</div>
+              <div class="p2-table-cell">952 - 1084</div>
+              <div class="p2-table-cell">1 497 000 AED</div>
+            </div>
+            <div class="p2-table-row">
+              <div class="p2-table-cell">Apartments</div>
+              <div class="p2-table-cell">2 Bedroom</div>
+              <div class="p2-table-cell">4/42</div>
+              <div class="p2-table-cell">952 - 1084</div>
+              <div class="p2-table-cell">2 389 000 AED</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p2-right-content">
+        <div class="p2-project-image">
+          <img src="{{project_image_p2}}" alt="ELO 2 Damac Hills Building" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

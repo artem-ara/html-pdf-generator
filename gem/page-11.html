@@ -1,0 +1,164 @@
+<div style="width: 297mm; height: 210mm; overflow: hidden; background: #ffffff; padding: 40px;">
+  <style>
+    .p11-body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #201e1b;
+      line-height: 1.2;
+      width: 100%;
+      height: 100%;
+    }
+
+    .p11-developer-container {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      align-items: stretch;
+      justify-content: flex-start;
+      width: 100%;
+      height: 100%;
+    }
+
+    .p11-left-panel {
+      flex: 0 0 400px;
+      background: #f8f8f8;
+      border: 1px solid #f0f0f4;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+    }
+
+    .p11-developer-title {
+      font-weight: 600;
+      font-size: 56px;
+      color: #201e1b;
+    }
+
+    .p11-stats-section {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .p11-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .p11-stat-number {
+      font-weight: 600;
+      font-size: 40px;
+    }
+
+    .p11-stat-label {
+      font-size: 20px;
+      color: #8a8a8d;
+    }
+
+    .p11-right-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .p11-company-image-section {
+      flex: 1;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .p11-company-image {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-image: url('{{dev_company_image}}');
+    }
+
+    .p11-company-overlay {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .p11-company-logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 3px solid #f0f0f4;
+    }
+
+    .p11-company-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .p11-company-name {
+      font-weight: 700;
+      font-size: 36px;
+      color: #ffffff;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .p11-description-section {
+      flex: 1;
+      background: #f8f8f8;
+      border: 1px solid #f0f0f4;
+      border-radius: 24px;
+      padding: 40px;
+    }
+
+    .p11-description-content p {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+  </style>
+  <div class="p11-body">
+    <div class="p11-developer-container">
+      <div class="p11-left-panel">
+        <h1 class="p11-developer-title">Developer</h1>
+        <div class="p11-stats-section">
+          <div class="p11-stat-item">
+            <div class="p11-stat-number">{{dev_foundation_year}}</div>
+            <div class="p11-stat-label">Year of foundation</div>
+          </div>
+          <div class="p11-stat-item">
+            <div class="p11-stat-number">{{dev_projects_in_progress}}</div>
+            <div class="p11-stat-label">Projects in construction stage</div>
+          </div>
+          <div class="p11-stat-item">
+            <div class="p11-stat-number">{{dev_completed_projects}}</div>
+            <div class="p11-stat-label">Completed projects</div>
+          </div>
+        </div>
+      </div>
+      <div class="p11-right-content">
+        <div class="p11-company-image-section">
+          <div class="p11-company-image">
+            <div class="p11-company-overlay">
+              <div class="p11-company-logo">
+                <img src="{{dev_company_logo}}" alt="Developer Logo" />
+              </div>
+              <div class="p11-company-name">{{developer_name}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="p11-description-section">
+          <div class="p11-description-content">
+            <p>{{dev_description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

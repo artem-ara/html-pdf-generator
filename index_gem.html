@@ -2219,17 +2219,17 @@
 
     const generatePdfBtn = document.getElementById('generatePdfBtn');
     const templates = {
-      page1: document.getElementById('pdf-template-page-1'),
-      page2: document.getElementById('pdf-template-page-2'),
-      page3: document.getElementById('pdf-template-page-3'),
-      page4: document.getElementById('pdf-template-page-4'),
-      page5: document.getElementById('pdf-template-page-5'),
-      page6: document.getElementById('pdf-template-page-6'),
-      page7: document.getElementById('pdf-template-page-7'),
-      page8: document.getElementById('pdf-template-page-8'),
-      page9: document.getElementById('pdf-template-page-9'),
-      page10: document.getElementById('pdf-template-page-10'),
-      page11: document.getElementById('pdf-template-page-11'),
+      page1: (window.PDF_TEMPLATES && window.PDF_TEMPLATES.page1) || '',
+      page2: '',
+      page3: '',
+      page4: '',
+      page5: '',
+      page6: '',
+      page7: '',
+      page8: '',
+      page9: '',
+      page10: '',
+      page11: ''
     };
 
     for (let i = 1; i <= 11; i++) {
@@ -2334,9 +2334,10 @@
       return result;
     }
 
-    async function previewPage(templateElement) {
+          async function previewPage(templateHtml) {
+            if (!templateHtml) { alert('Шаблон страницы недоступен.'); return; }
       const data = await getFormData();
-      const html = replacePlaceholders(templateElement.innerHTML, data);
+          const html = replacePlaceholders(templateHtml, data);
       const newWindow = window.open();
       newWindow.document.write(html);
       newWindow.document.close();
@@ -2355,7 +2356,10 @@
         const data = await getFormData();
         let finalHtml = '';
         for (const key in templates) {
-          finalHtml += replacePlaceholders(templates[key].innerHTML, data);
+          const tpl = templates[key];
+          if (typeof tpl === 'string' && tpl.length > 0) {
+            finalHtml += replacePlaceholders(tpl, data);
+          }
         }
 
         const element = document.createElement('div');
