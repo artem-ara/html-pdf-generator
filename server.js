@@ -17,149 +17,235 @@ app.use(express.static(path.join(__dirname)));
 
 // Load templates on server startup
 const templates = {};
-const templatesFile = path.join(__dirname, "all-templates.js");
 
-// Extract templates from all-templates.js
-if (fs.existsSync(templatesFile)) {
-	const fileContent = fs.readFileSync(templatesFile, "utf8");
+// Load HTML templates directly from page files
+for (let i = 1; i <= 11; i++) {
+	const templateKey = `page${i}`;
+	const pageFile = path.join(__dirname, `page-${i}.html`);
+
+	if (fs.existsSync(pageFile)) {
+		templates[templateKey] = fs.readFileSync(pageFile, "utf8");
+	} else {
+		console.warn(`Template file for ${templateKey} not found: ${pageFile}`);
+	}
+}
+
+// Функция для преобразования структурированного JSON в плоский формат
+function flattenPageData(data) {
+	// Если данные уже в плоском формате, возвращаем их как есть
+	if (!data.page1 && !data.page2) {
+		return data;
+	}
+
+	// Иначе собираем плоский объект из вложенных страниц
+	const flatData = {};
+
+	// Обрабатываем все страницы от 1 до 11
 	for (let i = 1; i <= 11; i++) {
-		const templateKey = `page${i}`;
-		const pattern = new RegExp(`window\\.PDF_TEMPLATES\\.${templateKey} = \`([\\s\\S]*?)\`;`, "m");
-		const match = fileContent.match(pattern);
-		if (match && match[1]) {
-			templates[templateKey] = match[1];
+		const pageKey = `page${i}`;
+		if (data[pageKey]) {
+			// Копируем все свойства из страницы в плоский объект
+			Object.assign(flatData, data[pageKey]);
 		}
 	}
+
+	// Обрабатываем специальные свойства верхнего уровня
+	if (data.pages) {
+		flatData.pages = data.pages;
+	}
+
+	// Для совместимости: если есть property_name в page1, используем его как propertyName
+	if (data.page1 && data.page1.property_name) {
+		flatData.propertyName = data.page1.property_name;
+	}
+
+	return flatData;
 }
 
 // Define form element keys to field mappings
 const fieldMappings = {
 	propertyName: "{{property_name}}",
+	property_name: "{{property_name}}", // Добавлен альтернативный ключ
+
+	// Страница 1
+	main_background: "{{main_background}}",
 	backgroundUpload: "{{main_background}}",
+	company_logo: "{{company_logo}}",
 	companyLogoUpload: "{{company_logo}}",
+	avatar_img: "{{avatar_img}}",
 	avatarUpload: "{{avatar_img}}",
+	presentation_text: "{{presentation_text}}",
 	presentationText: "{{presentation_text}}",
+	look_text: "{{look_text}}",
 	lookText: "{{look_text}}",
+	creation_date: "{{creation_date}}",
 	creationDate: "{{creation_date}}",
+	agent_name: "{{agent_name}}",
 	agentName: "{{agent_name}}",
+	agent_title: "{{agent_title}}",
 	agentTitle: "{{agent_title}}",
+	agent_phone: "{{agent_phone}}",
 	agentPhone: "{{agent_phone}}",
+	agent_email: "{{agent_email}}",
 	agentEmail: "{{agent_email}}",
+	agent_website: "{{agent_website}}",
 	agentWebsite: "{{agent_website}}",
+
+	// Страница 2
+	project_title_p2: "{{project_title_p2}}",
+	developer_logo: "{{developer_logo}}",
 	developerLogo: "{{developer_logo}}",
-	projectImageP2: "{{project_image_p2}}",
+	developer_name: "{{developer_name}}",
 	developerName: "{{developer_name}}",
+	district_name: "{{district_name}}",
 	districtName: "{{district_name}}",
+	timeline_start_date: "{{timeline_start_date}}",
 	timelineStartDate: "{{timeline_start_date}}",
+	timeline_end_date: "{{timeline_end_date}}",
 	timelineEndDate: "{{timeline_end_date}}",
+	timeline_progress_text: "{{timeline_progress_text}}",
 	timelineProgressText: "{{timeline_progress_text}}",
+	project_image_p2: "{{project_image_p2}}",
+	projectImageP2: "{{project_image_p2}}",
+
+	// Страница 3
+	building_image_p3: "{{building_image_p3}}",
 	buildingImageP3: "{{building_image_p3}}",
+	project_title_p3: "{{project_title_p3}}",
+	developer_logo_p3: "{{developer_logo_p3}}",
+	developer_name_p3: "{{developer_name_p3}}",
+	description_text: "{{description_text}}",
 	descriptionText: "{{description_text}}",
+
+	// Страница 4
+	unit_studio_count: "{{unit_studio_count}}",
 	unitStudioCount: "{{unit_studio_count}}",
+	unit_1_bed_count: "{{unit_1_bed_count}}",
 	unit1BedCount: "{{unit_1_bed_count}}",
+	unit_2_bed_count: "{{unit_2_bed_count}}",
 	unit2BedCount: "{{unit_2_bed_count}}",
+	villa_4_bed_image: "{{villa_4_bed_image}}",
 	villa4BedImage: "{{villa_4_bed_image}}",
+	villa_4_bed_price_from: "{{villa_4_bed_price_from}}",
 	villa4BedPriceFrom: "{{villa_4_bed_price_from}}",
+	villa_4_bed_price_to: "{{villa_4_bed_price_to}}",
 	villa4BedPriceTo: "{{villa_4_bed_price_to}}",
+	villa_4_bed_area_from: "{{villa_4_bed_area_from}}",
 	villa4BedAreaFrom: "{{villa_4_bed_area_from}}",
+	villa_4_bed_area_to: "{{villa_4_bed_area_to}}",
 	villa4BedAreaTo: "{{villa_4_bed_area_to}}",
+	villa_4_bed_rate_from: "{{villa_4_bed_rate_from}}",
 	villa4BedRateFrom: "{{villa_4_bed_rate_from}}",
+	villa_4_bed_rate_to: "{{villa_4_bed_rate_to}}",
 	villa4BedRateTo: "{{villa_4_bed_rate_to}}",
+	villa_5_bed_image: "{{villa_5_bed_image}}",
 	villa5BedImage: "{{villa_5_bed_image}}",
+	villa_5_bed_price_from: "{{villa_5_bed_price_from}}",
 	villa5BedPriceFrom: "{{villa_5_bed_price_from}}",
+	villa_5_bed_price_to: "{{villa_5_bed_price_to}}",
 	villa5BedPriceTo: "{{villa_5_bed_price_to}}",
+	villa_5_bed_area_from: "{{villa_5_bed_area_from}}",
 	villa5BedAreaFrom: "{{villa_5_bed_area_from}}",
+	villa_5_bed_area_to: "{{villa_5_bed_area_to}}",
 	villa5BedAreaTo: "{{villa_5_bed_area_to}}",
+	villa_5_bed_rate_from: "{{villa_5_bed_rate_from}}",
 	villa5BedRateFrom: "{{villa_5_bed_rate_from}}",
+	villa_5_bed_rate_to: "{{villa_5_bed_rate_to}}",
 	villa5BedRateTo: "{{villa_5_bed_rate_to}}",
+
+	// Страница 5
+	total_price: "{{total_price}}",
 	totalPrice: "{{total_price}}",
+	down_payment_percent: "{{down_payment_percent}}",
 	downPaymentPercent: "{{down_payment_percent}}",
+	down_payment_value: "{{down_payment_value}}",
 	downPaymentValue: "{{down_payment_value}}",
+	on_booking_value: "{{on_booking_value}}",
 	onBookingValue: "{{on_booking_value}}",
+	admin_fee_value: "{{admin_fee_value}}",
 	adminFeeValue: "{{admin_fee_value}}",
+	dld_fee_percent: "{{dld_fee_percent}}",
 	dldFeePercent: "{{dld_fee_percent}}",
+	dld_fee_value: "{{dld_fee_value}}",
 	dldFeeValue: "{{dld_fee_value}}",
+	during_construction_percent: "{{during_construction_percent}}",
 	duringConstructionPercent: "{{during_construction_percent}}",
+	during_construction_value: "{{during_construction_value}}",
 	duringConstructionValue: "{{during_construction_value}}",
+	on_handover_percent: "{{on_handover_percent}}",
 	onHandoverPercent: "{{on_handover_percent}}",
+	on_handover_value: "{{on_handover_value}}",
 	onHandoverValue: "{{on_handover_value}}",
+	post_handover_percent: "{{post_handover_percent}}",
 	postHandoverPercent: "{{post_handover_percent}}",
+	post_handover_value: "{{post_handover_value}}",
 	postHandoverValue: "{{post_handover_value}}",
+
+	// Страница 6
+	full_image_p6: "{{full_image_p6}}",
 	fullImageP6: "{{full_image_p6}}",
+
+	// Страница 7
+	collage2_image1_p7: "{{collage2_image1_p7}}",
 	collage2Image1P7: "{{collage2_image1_p7}}",
+	collage2_image2_p7: "{{collage2_image2_p7}}",
 	collage2Image2P7: "{{collage2_image2_p7}}",
+
+	// Страница 8
+	full_image_p8: "{{full_image_p8}}",
 	fullImageP8: "{{full_image_p8}}",
+
+	// Страница 9
+	collage3_image1_p9: "{{collage3_image1_p9}}",
 	collage3Image1P9: "{{collage3_image1_p9}}",
+	collage3_image2_p9: "{{collage3_image2_p9}}",
 	collage3Image2P9: "{{collage3_image2_p9}}",
+	collage3_image3_p9: "{{collage3_image3_p9}}",
 	collage3Image3P9: "{{collage3_image3_p9}}",
+
+	// Страница 10
+	full_image_p10: "{{full_image_p10}}",
 	fullImageP10: "{{full_image_p10}}",
+
+	// Страница 11
+	dev_company_image: "{{dev_company_image}}",
 	devCompanyImage: "{{dev_company_image}}",
+	dev_company_logo: "{{dev_company_logo}}",
 	devCompanyLogo: "{{dev_company_logo}}",
+	dev_foundation_year: "{{dev_foundation_year}}",
 	devFoundationYear: "{{dev_foundation_year}}",
+	dev_projects_in_progress: "{{dev_projects_in_progress}}",
 	devProjectsInProgress: "{{dev_projects_in_progress}}",
+	dev_completed_projects: "{{dev_completed_projects}}",
 	devCompletedProjects: "{{dev_completed_projects}}",
+	dev_description: "{{dev_description}}",
 	devDescription: "{{dev_description}}",
 };
 
 // Special cases: fields that are the same value but different placeholders
 const specialMappings = {
-	propertyName: ["{{project_title_p2}}", "{{project_title_p3}}"],
-	developerLogo: ["{{developer_logo_p3}}"],
+	property_name: ["{{project_title_p2}}", "{{project_title_p3}}"],
+	developer_logo: ["{{developer_logo_p3}}"],
 };
 
-// Default image URLs
+// Default images to use if not provided
 const defaultImages = {
-	backgroundUpload:
-		"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&h=1080&fit=crop&crop=center",
-	companyLogoUpload: "https://i.ibb.co/7jR3Y1V/luxury-logo.png",
-	avatarUpload:
-		"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face",
-	developerLogo:
-		"https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=80&h=80&fit=crop&crop=center",
-	projectImageP2:
-		"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=1000&fit=crop&crop=center",
-	buildingImageP3:
-		"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=1200&fit=crop&crop=center",
-	villa4BedImage:
-		"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=600&fit=crop&crop=center",
-	villa5BedImage:
-		"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=600&fit=crop&crop=center",
-	fullImageP6:
-		"https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1974&auto=format&fit=crop",
-	collage2Image1P7:
-		"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-	collage2Image2P7:
-		"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070&auto=format&fit=crop",
-	fullImageP8:
-		"https://images.unsplash.com/photo-1598228723793-52759bba239c?q=80&w=1974&auto=format&fit=crop",
-	collage3Image1P9:
-		"https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2070&auto=format&fit=crop",
-	collage3Image2P9:
-		"https://images.unsplash.com/photo-1605276374104-5de67d216b8a?q=80&w=2070&auto=format&fit=crop",
-	collage3Image3P9:
-		"https://images.unsplash.com/photo-1605146769289-440113cc3d00?q=80&w=2070&auto=format&fit=crop",
-	fullImageP10:
-		"https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto=format&fit=crop",
-	devCompanyImage:
-		"https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop&crop=center",
-	devCompanyLogo:
-		"https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=128&h=128&fit=crop&crop=center",
+	backgroundUpload: "https://example.com/default-background.jpg",
+	companyLogoUpload: "https://example.com/default-company-logo.png",
+	avatarUpload: "https://example.com/default-avatar.jpg",
+	developerLogo: "https://example.com/default-developer-logo.png",
+	projectImageP2: "https://example.com/default-project-image.jpg",
+	buildingImageP3: "https://example.com/default-building-image.jpg",
 };
 
-// Auto-detect placeholders in HTML templates
+// Function to find all {{placeholders}} in a template
 function detectPlaceholders(html) {
-	const placeholderRegex = /{{([^}]+)}}/g;
+	const placeholderRegex = /{{([^{}]+)}}/g;
 	const placeholders = new Set();
 	let match;
 
 	while ((match = placeholderRegex.exec(html)) !== null) {
 		placeholders.add(match[0]);
-	}
-
-	// Check for placeholders in url('placeholder')
-	const urlRegex = /url\('{{([^}]+)}}'\)/g;
-	while ((match = urlRegex.exec(html)) !== null) {
-		placeholders.add(`{{${match[1]}}}`);
 	}
 
 	return Array.from(placeholders);
@@ -175,7 +261,8 @@ function replacePlaceholders(html, data) {
 
 	// First process normal field mappings
 	for (const [fieldName, placeholder] of Object.entries(fieldMappings)) {
-		if (data[fieldName]) {
+		// Проверяем наличие значения и что оно не undefined
+		if (data[fieldName] !== undefined) {
 			replacements[placeholder] = data[fieldName];
 		} else if (defaultImages[fieldName]) {
 			// Use default image if available and field is for an image
@@ -185,7 +272,7 @@ function replacePlaceholders(html, data) {
 
 	// Then handle special cases where one field maps to multiple placeholders
 	for (const [fieldName, additionalPlaceholders] of Object.entries(specialMappings)) {
-		if (data[fieldName]) {
+		if (data[fieldName] !== undefined) {
 			additionalPlaceholders.forEach(placeholder => {
 				replacements[placeholder] = data[fieldName];
 			});
@@ -195,7 +282,7 @@ function replacePlaceholders(html, data) {
 	// Replace all placeholders in the template
 	let result = html;
 	for (const placeholder of placeholders) {
-		const value = replacements[placeholder] || "";
+		const value = replacements[placeholder] !== undefined ? replacements[placeholder] : "";
 
 		// Handle url() placeholders differently
 		if (placeholder.includes("background") || placeholder.includes("image")) {
@@ -209,25 +296,32 @@ function replacePlaceholders(html, data) {
 	return result;
 }
 
-// Create full HTML document
+// Create a full HTML document from page templates
 function createFullHtml(pageTemplates, data) {
 	let html = `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Generated PDF</title>
+      <title>PDF Template</title>
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
       <style>
-        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        .page-break { page-break-after: always; height: 0; display: block; }
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: 'Inter', sans-serif;
+        }
+        .page-break {
+          page-break-after: always;
+          break-after: page;
+        }
       </style>
     </head>
-    <body>
-  `;
+    <body>`;
 
 	const pageIds = Object.keys(pageTemplates).sort();
+
 	if (pageIds.length === 0) {
 		throw new Error("No templates available for rendering");
 	}
@@ -235,6 +329,7 @@ function createFullHtml(pageTemplates, data) {
 	try {
 		for (let i = 0; i < pageIds.length; i++) {
 			const pageTemplate = pageTemplates[pageIds[i]];
+
 			if (!pageTemplate) {
 				console.warn(`Template for ${pageIds[i]} is empty or invalid, skipping`);
 				continue;
@@ -242,6 +337,7 @@ function createFullHtml(pageTemplates, data) {
 
 			const renderedTemplate = replacePlaceholders(pageTemplate, data);
 			html += renderedTemplate;
+
 			if (i < pageIds.length - 1) {
 				html += '<div class="page-break"></div>';
 			}
@@ -253,15 +349,14 @@ function createFullHtml(pageTemplates, data) {
 
 	html += `
     </body>
-    </html>
-  `;
+    </html>`;
 
 	return html;
 }
 
-// Basic validation function for required data fields
+// Validate input data
 function validateInputData(data) {
-	// Required fields that should be present
+	// Currently only requiring property name, add more as needed
 	const requiredFields = ["propertyName"];
 	const missingFields = [];
 
@@ -274,116 +369,11 @@ function validateInputData(data) {
 	return missingFields;
 }
 
-// Screenshot generation endpoint
-app.post("/api/generate-screenshot", async (req, res) => {
-	try {
-		const data = req.body;
-
-		// Validate input data
-		const missingFields = validateInputData(data);
-		if (missingFields.length > 0) {
-			return res.status(400).json({
-				error: "Missing required fields",
-				missingFields,
-			});
-		}
-
-		const selectedPages = data.pages || Object.keys(templates); // Default to all pages if none specified
-
-		// Create subset of templates based on selected pages
-		const selectedTemplates = {};
-		for (const pageId of selectedPages) {
-			if (templates[pageId]) {
-				selectedTemplates[pageId] = templates[pageId];
-			}
-		}
-
-		if (Object.keys(selectedTemplates).length === 0) {
-			return res.status(400).json({ error: "No valid templates selected" });
-		}
-
-		// Generate full HTML from templates with the provided data
-		const html = createFullHtml(selectedTemplates, data);
-
-		// Launch Puppeteer
-		const browser = await puppeteer.launch({
-			args: ["--no-sandbox", "--disable-setuid-sandbox"],
-			headless: true,
-		});
-
-		const page = await browser.newPage();
-
-		// Set viewport to match A4 landscape size (297mm x 210mm) at 300 DPI
-		await page.setViewport({
-			width: 3508, // 297mm at 300 DPI
-			height: 2480, // 210mm at 300 DPI
-			deviceScaleFactor: 1,
-		});
-
-		await page.setContent(html, { waitUntil: "networkidle0" });
-
-		// Allow time for font loading and rendering
-		await page.evaluateHandle("document.fonts.ready");
-
-		// Take screenshots of each page section
-		const screenshots = [];
-		for (let i = 0; i < Object.keys(selectedTemplates).length; i++) {
-			const elementHandle = await page.evaluateHandle(i => document.body.children[i], i);
-
-			const boundingBox = await elementHandle.boundingBox();
-
-			if (boundingBox) {
-				const screenshot = await page.screenshot({
-					clip: {
-						x: boundingBox.x,
-						y: boundingBox.y,
-						width: boundingBox.width,
-						height: boundingBox.height,
-					},
-					encoding: "base64",
-				});
-
-				screenshots.push({
-					page: Object.keys(selectedTemplates)[i],
-					data: `data:image/png;base64,${screenshot}`,
-				});
-			}
-
-			await elementHandle.dispose();
-		}
-
-		await browser.close();
-
-		// Return the screenshots
-		res.json({
-			success: true,
-			screenshots,
-		});
-	} catch (error) {
-		console.error("Error generating screenshot:", error);
-		let errorMessage = "Error generating screenshot";
-
-		// Provide more specific error messages for common errors
-		if (error.message.includes("timeout")) {
-			errorMessage = "Operation timed out while generating screenshots";
-		} else if (error.message.includes("navigation")) {
-			errorMessage = "Navigation error while loading page content";
-		} else if (error.message.includes("Template rendering failed")) {
-			errorMessage = error.message;
-		}
-
-		res.status(500).json({
-			success: false,
-			error: errorMessage,
-			details: error.message,
-		});
-	}
-});
-
-// PDF generation endpoint
+// API endpoint to generate PDF
 app.post("/api/generate-pdf", async (req, res) => {
 	try {
-		const data = req.body;
+		// Преобразуем структурированные данные в плоский формат
+		const data = flattenPageData(req.body);
 
 		// Validate input data
 		const missingFields = validateInputData(data);
@@ -394,45 +384,30 @@ app.post("/api/generate-pdf", async (req, res) => {
 			});
 		}
 
-		const selectedPages = data.pages || Object.keys(templates); // Default to all pages if none specified
-
-		// Create subset of templates based on selected pages
+		const selectedPages = data.pages || Object.keys(templates);
 		const selectedTemplates = {};
+
 		for (const pageId of selectedPages) {
 			if (templates[pageId]) {
 				selectedTemplates[pageId] = templates[pageId];
 			}
 		}
 
-		if (Object.keys(selectedTemplates).length === 0) {
-			return res.status(400).json({ error: "No valid templates selected" });
-		}
-
-		// Generate full HTML from templates with the provided data
 		const html = createFullHtml(selectedTemplates, data);
 
-		// Launch Puppeteer
+		// Launch browser and generate PDF
 		const browser = await puppeteer.launch({
+			headless: "new",
 			args: ["--no-sandbox", "--disable-setuid-sandbox"],
-			headless: true,
 		});
 
 		const page = await browser.newPage();
-
-		// Set the page size to A4 Landscape
-		await page.setViewport({
-			width: 3508, // 297mm at 300 DPI
-			height: 2480, // 210mm at 300 DPI
-			deviceScaleFactor: 1,
+		await page.setContent(html, {
+			waitUntil: "networkidle0",
+			timeout: 30000,
 		});
 
-		await page.setContent(html, { waitUntil: "networkidle0" });
-
-		// Wait for fonts to load
-		await page.evaluateHandle("document.fonts.ready");
-
-		// Generate PDF
-		const pdfBuffer = await page.pdf({
+		const pdf = await page.pdf({
 			format: "A4",
 			landscape: true,
 			printBackground: true,
@@ -446,18 +421,14 @@ app.post("/api/generate-pdf", async (req, res) => {
 
 		await browser.close();
 
-		// Set response headers and send PDF
-		res.setHeader("Content-Type", "application/pdf");
-		res.setHeader(
-			"Content-Disposition",
-			`attachment; filename="presentation-${data.propertyName || "property"}.pdf"`
-		);
-		res.send(pdfBuffer);
+		res.contentType("application/pdf");
+		res.setHeader("Content-Disposition", "attachment; filename=presentation.pdf");
+		res.send(pdf);
 	} catch (error) {
 		console.error("Error generating PDF:", error);
-		let errorMessage = "Error generating PDF";
 
-		// Provide more specific error messages for common errors
+		// Enhanced error messages
+		let errorMessage = "Error generating PDF";
 		if (error.message.includes("timeout")) {
 			errorMessage = "Operation timed out while generating PDF";
 		} else if (error.message.includes("navigation")) {
@@ -474,25 +445,108 @@ app.post("/api/generate-pdf", async (req, res) => {
 	}
 });
 
-// API endpoint for getting available templates
-app.get("/api/templates", (req, res) => {
-	const templateKeys = Object.keys(templates).map(key => {
-		return { id: key, name: key.replace("page", "Page ") };
-	});
+// API endpoint to generate screenshots
+app.post("/api/generate-screenshot", async (req, res) => {
+	try {
+		// Преобразуем структурированные данные в плоский формат
+		const data = flattenPageData(req.body);
 
+		// Validate input data
+		const missingFields = validateInputData(data);
+		if (missingFields.length > 0) {
+			return res.status(400).json({
+				error: "Missing required fields",
+				missingFields,
+			});
+		}
+
+		const selectedPages = data.pages || Object.keys(templates);
+		const selectedTemplates = {};
+
+		for (const pageId of selectedPages) {
+			if (templates[pageId]) {
+				selectedTemplates[pageId] = templates[pageId];
+			}
+		}
+
+		const html = createFullHtml(selectedTemplates, data);
+
+		// Launch browser and generate screenshots
+		const browser = await puppeteer.launch({
+			headless: "new",
+			args: ["--no-sandbox", "--disable-setuid-sandbox"],
+		});
+
+		const page = await browser.newPage();
+		await page.setViewport({
+			width: 1122, // A4 width in pixels at 96 DPI
+			height: 793, // A4 height in pixels at 96 DPI
+			deviceScaleFactor: 2, // Higher resolution
+		});
+
+		await page.setContent(html, {
+			waitUntil: "networkidle0",
+			timeout: 30000,
+		});
+
+		// Get all page divs
+		const pageDivs = await page.$$("body > div");
+		const screenshots = [];
+
+		for (let i = 0; i < pageDivs.length; i++) {
+			const pageId = selectedPages[i];
+			const screenshot = await pageDivs[i].screenshot({
+				type: "png",
+				encoding: "base64",
+			});
+
+			screenshots.push({
+				page: pageId,
+				image: screenshot,
+			});
+		}
+
+		await browser.close();
+
+		res.json({
+			success: true,
+			screenshots,
+		});
+	} catch (error) {
+		console.error("Error generating screenshot:", error);
+
+		// Enhanced error messages
+		let errorMessage = "Error generating screenshot";
+		if (error.message.includes("timeout")) {
+			errorMessage = "Operation timed out while generating screenshots";
+		} else if (error.message.includes("navigation")) {
+			errorMessage = "Navigation error while loading page content";
+		} else if (error.message.includes("Template rendering failed")) {
+			errorMessage = error.message;
+		}
+
+		res.status(500).json({
+			success: false,
+			error: errorMessage,
+			details: error.message,
+		});
+	}
+});
+
+// API endpoint to list available templates
+app.get("/api/templates", (req, res) => {
 	res.json({
 		success: true,
-		templates: templateKeys,
+		templates: Object.keys(templates),
 	});
 });
 
-// Homepage route
+// Serve the HTML for the homepage
 app.get("/", (req, res) => {
 	res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // Start the server
 app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`);
-	console.log(`Templates loaded: ${Object.keys(templates).length}`);
+	console.log(`Server is running on port ${PORT}`);
 });
